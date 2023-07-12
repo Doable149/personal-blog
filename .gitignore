@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Generated files
+package/generated*
+
+api-docs/
+
+_site/
+
+.cache

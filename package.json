@@ -1,0 +1,24 @@
+{
+  "name": "personal-blog",
+  "version": "1.0.0",
+  "description": "My personal blog made in Eleventy",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx @11ty/eleventy --serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nopraz/personal-blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nopraz/personal-blog/issues"
+  },
+  "homepage": "https://github.com/Nopraz/personal-blog#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.0"
+  }
+}
