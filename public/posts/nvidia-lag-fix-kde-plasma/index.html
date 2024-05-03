@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>Nvidia Lag Fix KDE Plasma 5/6 on X11 | Nopraz Blog</title>
+
+	<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+
+	</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a class="logo" href="http://localhost:1313/">
+      Nopraz Blog
+    </a>
+    <ul class="main-menu">
+      
+      <li>
+        <a href="/posts/">Posts</a>
+      </li>
+      
+    </ul>
+  </nav>
+</header>
+
+
+<main class="content">
+
+
+<h1>Nvidia Lag Fix KDE Plasma 5/6 on X11</h1>
+
+<p>Hello readers of this post!</p>
+<p>Some of you that have a high refresh-rate with a second monitor at a different refresh rate, let&rsquo;s say 60hz may have seen some stutters or lags when launching apps like System Settings and may also have seen that the windows does not move at 144fps.</p>
+<p>I managed to fix this issue by merging multiple solutions found on multiple reddit posts and on forums of KDE Plasma. Here are the things that you want to do to try to solve this:</p>
+<h2 id="disabling-opengl-flipping">Disabling OpenGL Flipping</h2>
+<p>To do this you need to go to nvidia-settings -&gt; OpenGL Settings -&gt; Uncheck &ldquo;Allow OpenGL Flipping&rdquo;</p>
+<p>You will normally see a change in mouse stutter and your cursor should not &ldquo;skip&rdquo; frames when launching apps.</p>
+<p>To persist this change, you need to edit the XOrg configuration file in <code>/etc/X11/xorg.conf</code></p>
+<p>It is not created by default, nvidia-settings can generate it for you if you launch it with the root user with this command:</p>
+<p>sudo nvidia-settings</p>
+<p>To generate the XOrg file with nvidia-settings in root mode go to:</p>
+<p>X Server Display Configuration -&gt; Save to X Configuration File and save it into <code>/etc/X11/xorg.conf</code>:</p>
+<p>OpenGL Menu</p>
+<p>And then to make the OpenGL Flipping completely disabled add this to your xorg.conf file in the &ldquo;Device&rdquo; section of the config:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Option         <span style="color:#e6db74">&#34;NoFlip&#34;</span> <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span></code></pre></div><p>Save it and reboot your computer.</p>
+<h2 id="disabling-kwin-vsync-and-force-full-composition-pipeline">Disabling KWIN Vsync and force full composition pipeline</h2>
+<p>To do this, you will need to add some line to your /etc/environment file.</p>
+<p>This file needs to be edited by the root user so use your favorite editor in sudo mode and add these lines:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>__GL_SYNC_DISPLAY_DEVICE<span style="color:#f92672">=</span>DP-0 
+</span></span><span style="display:flex;"><span>VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE<span style="color:#f92672">=</span>DP-0
+</span></span></code></pre></div><p><code>__GL_SYNC_DISPLAY_DEVICE</code> =&gt; Indicate your monitor with high refresh rate</p>
+<p><code>VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE</code> =&gt; Same thing</p>
+<p>In order to obtain the display device ID (like DP-0) you can use nvidia-settings and go to the X Server Display Configuration.</p>
+<p>Select your monitor in the layout and read the selection field, it should read &ldquo;DP-X on GPU-0&rdquo; where X is the ID of the DisplayPort port used:</p>
+<p>Screen of nvidia-settings</p>
+<p>Use this value (DP-0 for example) in the __GL_SYNC and VDPAU items in the environment file and save it.</p>
+<p>Again in the same file add these three lines after the other two:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>KWIN_X11_REFRESH_RATE<span style="color:#f92672">=</span><span style="color:#ae81ff">144000</span>
+</span></span><span style="display:flex;"><span>KWIN_X11_NO_SYNC_TO_VBLANK<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>KWIN_X11_FORCE_SOFTWARE_VSYNC<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Meaning of the values:</p>
+<p><code>KWIN_X11_REFRESH_RATE</code> : Refresh rate of your monitor multiplied by 1000</p>
+<p><code>KWIN_X11_NO_SYNC_TO_VBLANK</code> : Don&rsquo;t use vblank for kwin compositor</p>
+<p><code>KWIN_X11_FORCE_SOFTWARE_VSYNC</code> : Force the usage of the software Vsync of kwin</p>
+<p>Go to nvidia-settings in sudo mode like before then go to the X Server Display Configuration and click on the &ldquo;Advanced&hellip;&rdquo; button on the bottom of the window.</p>
+<p>Select your high refresh rate monitor and check &ldquo;Force Composition Pipeline&rdquo; and &ldquo;Force Full Composition Pipeline&rdquo;.</p>
+<p>Apply and Save your X configuration file like before in /etc/X11/xorg.conf.</p>
+<p>Reboot your computer</p>
+<p>I hope your experience is smoother now. For me it worked like a charm!</p>
+<p>Sources:</p>
+<ul>
+<li>My original post on reddit: <a href="https://www.reddit.com/r/EndeavourOS/comments/p8b2kf/for_those_that_have_stutterlags_problems_with_kde">https://www.reddit.com/r/EndeavourOS/comments/p8b2kf/for_those_that_have_stutterlags_problems_with_kde</a></li>
+<li><a href="https://www.reddit.com/r/linux_gaming/comments/ap781g/living_with_144hz_with_60hz_secondary_screens/">https://www.reddit.com/r/linux_gaming/comments/ap781g/living_with_144hz_with_60hz_secondary_screens/</a></li>
+<li><a href="https://bugs.kde.org/show_bug.cgi?id=433094">https://bugs.kde.org/show_bug.cgi?id=433094</a></li>
+</ul>
+
+
+</main>
+	
+<footer>
+	<p>&copy;2024 Nopraz Blog</p>
+</footer>
+
+</body>
+</html>
+
