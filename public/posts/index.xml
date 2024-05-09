@@ -9,6 +9,13 @@
     <lastBuildDate>Fri, 03 May 2024 18:19:28 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Installer Hyprland sur une distribution Arch Linux</title>
+      <link>http://localhost:1313/posts/installer-hyprland-arch/</link>
+      <pubDate>Fri, 03 May 2024 18:19:28 +0200</pubDate>
+      <guid>http://localhost:1313/posts/installer-hyprland-arch/</guid>
+      <description>Dépendances Installer les dépendances nécessaires :&#xA;sudo pacman -S hyprland \ xdg-desktop-portal-hyprland \ dunst \ waybar \ wofi \ alacritty \ cliphist \ udiskie \ xwaylandvideobridge \ ttf-font-awesome yay -S hyprpicker \ wl-clip-persist \ hyprland-per-window-layout Configuration Hyprland Créer un dossier dans .config nommé hypr quo contiendra les configs d&amp;rsquo;hyprland et d&amp;rsquo;hyprpaper :&#xA;mkdir -p ~/.config/hypr Placer ce fichier de config dans ~/.config/hypr/hyprland.conf (Ajuster en conséquence les deux première lignes de monitor selon cette écriture) : monitor=NomSortieVideo,highrr,0x0 ,1</description>
+    </item>
+    <item>
       <title>Nvidia Lag Fix KDE Plasma 5/6 on X11</title>
       <link>http://localhost:1313/posts/nvidia-lag-fix-kde-plasma/</link>
       <pubDate>Fri, 03 May 2024 18:19:28 +0200</pubDate>
