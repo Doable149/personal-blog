@@ -14,6 +14,8 @@ I managed to fix this issue by merging multiple solutions found on multiple redd
 
 To do this you need to go to nvidia-settings -> OpenGL Settings -> Uncheck "Allow OpenGL Flipping"
 
+{{< figure src="nvidia-settings.webp" title="Nvidia settings" >}}
+
 You will normally see a change in mouse stutter and your cursor should not "skip" frames when launching apps.
 
 To persist this change, you need to edit the XOrg configuration file in `/etc/X11/xorg.conf`
@@ -54,7 +56,6 @@ In order to obtain the display device ID (like DP-0) you can use nvidia-settings
 
 Select your monitor in the layout and read the selection field, it should read "DP-X on GPU-0" where X is the ID of the DisplayPort port used:
 
-Screen of nvidia-settings
 
 Use this value (DP-0 for example) in the __GL_SYNC and VDPAU items in the environment file and save it.
 
@@ -85,6 +86,6 @@ I hope your experience is smoother now. For me it worked like a charm!
 
 Sources:
 
-- My original post on reddit: https://www.reddit.com/r/EndeavourOS/comments/p8b2kf/for_those_that_have_stutterlags_problems_with_kde
-- https://www.reddit.com/r/linux_gaming/comments/ap781g/living_with_144hz_with_60hz_secondary_screens/
-- https://bugs.kde.org/show_bug.cgi?id=433094
+- [My original post on reddit](https://www.reddit.com/r/EndeavourOS/comments/p8b2kf/for_those_that_have_stutterlags_problems_with_kde)
+- [Some tutorial on reddit](https://www.reddit.com/r/linux_gaming/comments/ap781g/living_with_144hz_with_60hz_secondary_screens/)
+- [KDE Issue](https://bugs.kde.org/show_bug.cgi?id=433094)

@@ -1,5 +1,5 @@
 baseURL = 'https://example.org/'
-languageCode = 'fr-fr'
+languageCode = 'fr-FR'
 title = 'Nopraz Blog'
 theme = 'my-custom-theme'
 
@@ -8,3 +8,28 @@ theme = 'my-custom-theme'
     name = 'Posts'
     pageRef = '/posts'
     weight = 10
+
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = true
+[languages]
+  [languages.en]
+    contentDir = 'content/en'
+    disabled = false
+    languageCode = 'en-US'
+    languageDirection = 'ltr'
+    languageName = 'English'
+    title = 'Tutorials and tips of Nopraz'
+    weight = 1
+    [languages.en.params]
+      subtitle = 'Tutorials'
+  [languages.fr]
+    contentDir = 'content/fr'
+    disabled = false
+    languageCode = 'fr-FR'
+    languageDirection = 'ltr'
+    languageName = 'French'
+    title = 'Tutoriels'
+    weight = 2
+    [languages.fr.params]
+      subtitle = 'Tutoriels et astuces de Nopraz'
+
